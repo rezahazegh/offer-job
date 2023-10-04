@@ -16,8 +16,8 @@ import { Repository } from 'typeorm';
 import { IOffer } from './interface/offer.interface';
 
 @Injectable()
-export class JobService {
-  private readonly logger = new Logger(JobService.name);
+export class OfferService {
+  private readonly logger = new Logger(OfferService.name);
 
   constructor(
     @InjectRepository(Offer)
