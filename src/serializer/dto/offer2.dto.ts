@@ -6,7 +6,7 @@ import {
   plainToInstance,
   Type,
 } from 'class-transformer';
-import { IOfferDto } from '../../offer/interface/offer-dto.interface';
+import { IOfferDto } from '../interface/offer-dto.interface';
 
 class OfferPart {
   name: string;

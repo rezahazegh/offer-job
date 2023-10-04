@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 import { IOffer } from '../../offer/interface/offer.interface';
 import { IsString } from 'class-validator';
 import { Logger } from '@nestjs/common';
-import { IOfferDto } from '../../offer/interface/offer-dto.interface';
+import { IOfferDto } from '../interface/offer-dto.interface';
 
 class Offer implements Omit<IOffer, 'slug'> {
   // should be mapped to `externalOfferId`
