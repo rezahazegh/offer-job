@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { OfferValidatorDto } from './dto/offer-validator.dto';
-import { validate } from 'class-validator';
+import { validate, ValidationError } from 'class-validator';
 import { IOffer } from '../offer/interface/offer.interface';
 
 @Injectable()
@@ -30,9 +30,9 @@ export class ValidatorService {
 
     return offerListValidated;
   }
-  private logSkippedOffer(errors, offer) {
+  private logSkippedOffer(errors: ValidationError[], offer: IOffer) {
     this.logger.warn(
-      `\n---------------------------------------------\n** Validation Error - The following offer skipped:\n ${JSON.stringify(
+      `\n---------------------------------------------\n** Validation Error - The following offer skipped:\n${JSON.stringify(
         offer,
       )}\n** Rejected fields:\n${errors.map(({ property }) => property)}`,
     );
