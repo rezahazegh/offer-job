@@ -1,8 +1,6 @@
-import { Provider } from '../enum/provider.enum';
+import { Provider } from '../../provider/enum/provider.enum';
 import { Offer1Dto } from './offer1.dto';
 import { Offer2Dto } from './offer2.dto';
-import { IOfferDto } from '../interface/offer-dto.interface';
-import { ClassConstructor } from 'class-transformer';
 
 export class OfferDtoFactory {
   static getDto(provider: Provider): any {

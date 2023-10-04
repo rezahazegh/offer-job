@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { Provider } from './enum/provider.enum';
-import { OfferDtoFactory } from './dto/offer-dto.factory';
+import { Provider } from '../provider/enum/provider.enum';
+import { OfferDtoFactory } from '../serializer/dto/offer-dto.factory';
 import { validate } from 'class-validator';
 import { OfferValidatorDto } from './dto/offer-validator.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { Offer } from './entity/offer.entity';
 import { Repository } from 'typeorm';
 import { IOffer } from './interface/offer.interface';
 import { ProviderService } from '../provider/provider.service';
+import { SerializerService } from '../serializer/serializer.service';
 
 @Injectable()
 export class OfferService {
@@ -16,6 +17,7 @@ export class OfferService {
 
   constructor(
     private readonly providerService: ProviderService,
+    private readonly serializerService: SerializerService,
     @InjectRepository(Offer)
     private readonly offerRepository: Repository<Offer>,
   ) {}
@@ -26,10 +28,8 @@ export class OfferService {
 
     for (const provider of providers) {
       const payload = this.providerService.fetchData(provider);
-      const offerListSerialized = this.serializePayloadToOfferList(
-        provider,
-        payload,
-      );
+      const offerListSerialized =
+        this.serializerService.serializePayloadToOfferList(provider, payload);
       const offerListValidated = await this.validateSerializedOfferList(
         offerListSerialized.offerList,
       );
@@ -38,14 +38,6 @@ export class OfferService {
     }
   }
 
-  private serializePayloadToOfferList(provider: Provider, payload) {
-    const offerDto = OfferDtoFactory.getDto(provider);
-    const offerListClass = plainToInstance(offerDto, payload);
-    const offerListSerialized = instanceToPlain(offerListClass, {
-      excludeExtraneousValues: true,
-    });
-    return offerListSerialized;
-  }
   private async validateSerializedOfferList(offerList) {
     const offerListValidationPromises = offerList.map((offer) => {
       const offerClass = plainToInstance(OfferValidatorDto, offer);

@@ -4,9 +4,14 @@ import { OfferService } from './offer.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Offer } from './entity/offer.entity';
 import { ProviderModule } from '../provider/provider.module';
+import { SerializerModule } from '../serializer/serializer.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Offer]), ProviderModule],
+  imports: [
+    TypeOrmModule.forFeature([Offer]),
+    ProviderModule,
+    SerializerModule,
+  ],
   controllers: [OfferController],
   providers: [OfferService],
 })

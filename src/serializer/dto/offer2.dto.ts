@@ -1,4 +1,4 @@
-import { IOffer } from '../interface/offer.interface';
+import { IOffer } from '../../offer/interface/offer.interface';
 import {
   Expose,
   instanceToPlain,
@@ -6,7 +6,7 @@ import {
   plainToInstance,
   Type,
 } from 'class-transformer';
-import { IOfferDto } from '../interface/offer-dto.interface';
+import { IOfferDto } from '../../offer/interface/offer-dto.interface';
 
 class OfferPart {
   name: string;

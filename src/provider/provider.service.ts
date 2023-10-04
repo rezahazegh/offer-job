@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Provider } from '../offer/enum/provider.enum';
+import { Provider } from './enum/provider.enum';
 import { payload as payload1 } from '../../payload/offer1.payload';
 import { payload as payload2 } from '../../payload/offer2.payload';
 

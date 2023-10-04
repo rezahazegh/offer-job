@@ -6,7 +6,7 @@ import {
   IsUrl,
   MaxLength,
 } from 'class-validator';
-import { Provider } from '../enum/provider.enum';
+import { Provider } from '../../provider/enum/provider.enum';
 import { NumericFlag } from '../enum/numeric-flag.enum';
 
 export class OfferValidatorDto implements Omit<IOffer, 'slug'> {
