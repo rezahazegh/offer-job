@@ -28,15 +28,15 @@ export class Offer implements IOffer {
   thumbnail: string;
 
   // indicates if offer is available for desktop
-  @Column({ type: 'tinyint', width: 1, default: 0, name: 'is_desktop' })
+  @Column({ type: 'smallint', default: 0, name: 'is_desktop' })
   isDesktop: number;
 
   // indicates if offer is available for android
-  @Column({ type: 'tinyint', width: 1, default: 0, name: 'is_android' })
+  @Column({ type: 'smallint', default: 0, name: 'is_android' })
   isAndroid: number;
 
   // indicates if offer is available for ios
-  @Column({ type: 'tinyint', width: 1, default: 0, name: 'is_ios' })
+  @Column({ type: 'smallint', default: 0, name: 'is_ios' })
   isIos: number;
 
   // offer url template
