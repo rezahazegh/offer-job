@@ -11,6 +11,8 @@ import { IOffer } from './interface/offer.interface';
 import { ProviderService } from '../provider/provider.service';
 import { SerializerService } from '../serializer/serializer.service';
 import { ValidatorService } from '../validator/validator.service';
+import { SlugService } from './slug.service';
+import { of } from 'rxjs';
 
 @Injectable()
 export class OfferService {
@@ -18,6 +20,7 @@ export class OfferService {
     private readonly providerService: ProviderService,
     private readonly serializerService: SerializerService,
     private readonly validatorService: ValidatorService,
+    private readonly slugService: SlugService,
     @InjectRepository(Offer)
     private readonly offerRepository: Repository<Offer>,
   ) {}
@@ -27,22 +30,34 @@ export class OfferService {
 
     for (const provider of providers) {
       const payload = this.providerService.fetchData(provider);
+
       const offerListSerialized =
         this.serializerService.serializePayloadToOfferList(provider, payload);
+
       const offerListValidated =
         await this.validatorService.validateSerializedOfferList(
           offerListSerialized,
         );
 
-      await this.saveOffers(offerListValidated);
+      const offers = await this.saveOffers(offerListValidated);
+
+      await this.addSlugToOffers(offers);
     }
   }
 
-  private async saveOffers(offers: IOffer[]) {
+  private async saveOffers(offers: IOffer[]): Promise<Offer[]> {
     const offerEntityPromiseList = offers.map((offer) => {
       const offerEntity = new Offer(offer);
       return this.offerRepository.save(offerEntity);
     });
-    await Promise.allSettled(offerEntityPromiseList);
+    return Promise.all(offerEntityPromiseList);
+  }
+
+  private async addSlugToOffers(offers: Offer[]) {
+    const offerEntityPromiseList = offers.map((offer) => {
+      offer.slug = this.slugService.generateSlug(offer.id);
+      return this.offerRepository.save(offer);
+    });
+    await Promise.all(offerEntityPromiseList);
   }
 }

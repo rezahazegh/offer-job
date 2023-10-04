@@ -6,6 +6,7 @@ import { Offer } from './entity/offer.entity';
 import { ProviderModule } from '../provider/provider.module';
 import { SerializerModule } from '../serializer/serializer.module';
 import { ValidatorModule } from '../validator/validator.module';
+import { SlugService } from './slug.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { ValidatorModule } from '../validator/validator.module';
     ValidatorModule,
   ],
   controllers: [OfferController],
-  providers: [OfferService],
+  providers: [OfferService, SlugService],
 })
 export class OfferModule {}

@@ -16,7 +16,7 @@ class OSPart {
   android: boolean;
   ios: boolean;
 }
-export class Offer implements Omit<IOffer, 'slug'> {
+class Offer implements Omit<IOffer, 'slug'> {
   Offer: OfferPart;
   OS: OSPart;
 
