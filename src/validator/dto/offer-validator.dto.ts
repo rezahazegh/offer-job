@@ -1,4 +1,4 @@
-import { IOffer } from '../interface/offer.interface';
+import { IOffer } from '../../offer/interface/offer.interface';
 import {
   IsEnum,
   IsOptional,
@@ -7,7 +7,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { Provider } from '../../provider/enum/provider.enum';
-import { NumericFlag } from '../enum/numeric-flag.enum';
+import { NumericFlag } from '../../offer/enum/numeric-flag.enum';
 
 export class OfferValidatorDto implements Omit<IOffer, 'slug'> {
   @IsString()
