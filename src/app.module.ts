@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProviderModule } from './provider/provider.module';
 import { SerializerModule } from './serializer/serializer.module';
+import { ValidatorModule } from './validator/validator.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SerializerModule } from './serializer/serializer.module';
     OfferModule,
     ProviderModule,
     SerializerModule,
+    ValidatorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
