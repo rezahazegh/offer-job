@@ -3,6 +3,10 @@ import { IOffer } from '../interface/offer.interface';
 
 @Entity('offers')
 export class Offer implements IOffer {
+  constructor(offer?: IOffer) {
+    Object.assign(this, offer);
+  }
+
   // primary column for offer id
   @PrimaryGeneratedColumn()
   id: number;
@@ -12,7 +16,12 @@ export class Offer implements IOffer {
   name: string;
 
   // unique identifier for offer
-  @Column({ type: 'varchar', length: 255, unique: true })
+  @Column({
+    type: 'varchar',
+    length: 255,
+    unique: true,
+    nullable: true,
+  })
   slug: string;
 
   // offer description

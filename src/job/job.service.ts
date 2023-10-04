@@ -10,17 +10,23 @@ import { Provider } from './enum/provider.enum';
 import { OfferDtoFactory } from './dto/offer-dto.factory';
 import { validate } from 'class-validator';
 import { OfferValidatorDto } from './dto/offer-validator.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Offer } from './entity/offer.entity';
+import { Repository } from 'typeorm';
+import { IOffer } from './interface/offer.interface';
 
 @Injectable()
 export class JobService {
   private readonly logger = new Logger(JobService.name);
 
-  constructor() {}
+  constructor(
+    @InjectRepository(Offer)
+    private readonly offerRepository: Repository<Offer>,
+  ) {}
 
   async fetchOffers() {
     const providers: Provider[] = this.getListOfActiveProviders();
 
-    const offerList = [];
     for (const provider of providers) {
       const payload = this.fetchData(provider);
       const offerListSerialized = this.serializePayloadToOfferList(
@@ -31,11 +37,8 @@ export class JobService {
         offerListSerialized.offerList,
       );
 
-      offerList.push(...offerListValidated);
-      // save on db
+      await this.saveOffers(offerListValidated);
     }
-
-    return offerList;
   }
   private getListOfActiveProviders(): Provider[] {
     return Object.values(Provider);
@@ -84,5 +87,13 @@ export class JobService {
         offer,
       )}\n** Rejected fields:\n${errors.map(({ property }) => property)}`,
     );
+  }
+
+  private async saveOffers(offers: IOffer[]) {
+    const offerEntityPromiseList = offers.map((offer) => {
+      const offerEntity = new Offer(offer);
+      return this.offerRepository.save(offerEntity);
+    });
+    await Promise.allSettled(offerEntityPromiseList);
   }
 }
