@@ -1,12 +1,7 @@
 import { IOffer } from '../../offer/interface/offer.interface';
-import {
-  Expose,
-  instanceToPlain,
-  plainToClass,
-  plainToInstance,
-  Type,
-} from 'class-transformer';
+import { Expose, instanceToPlain, plainToInstance } from 'class-transformer';
 import { IOfferDto } from '../interface/offer-dto.interface';
+import { Provider } from '../../provider/enum/provider.enum';
 
 class OfferPart {
   name: string;
@@ -25,43 +20,36 @@ export class Offer implements Omit<IOffer, 'slug'> {
   Offer: OfferPart;
   OS: OSPart;
 
-  // offer name
   @Expose()
   get name() {
     return this.Offer.name;
   }
 
-  // offer description
   @Expose()
   get description() {
     return this.Offer.description;
   }
 
-  // offer requirements
   @Expose()
   get requirements() {
     return this.Offer.instructions;
   }
 
-  // offer thumbnail image url
   @Expose()
   get thumbnail() {
     return this.Offer.icon;
   }
 
-  // indicates if offer is available for desktop
   @Expose()
   get isDesktop() {
     return this.OS.web ? 1 : 0;
   }
 
-  // indicates if offer is available for android
   @Expose()
   get isAndroid() {
     return this.OS.android ? 1 : 0;
   }
 
-  // indicates if offer is available for ios
   @Expose()
   get isIos() {
     return this.OS.ios ? 1 : 0;
@@ -73,37 +61,32 @@ export class Offer implements Omit<IOffer, 'slug'> {
     return this.Offer.tracking_url;
   }
 
-  // provider name - this should be static for each offer type
-  // we're attaching two offer payloads - offer1, offer2
-  // so for offer1 payload, this should be "offer1"
-  // for offer2 payload, this should be "offer2"
   @Expose()
   get providerName() {
-    return 'offer2';
+    return Provider.Offer2;
   }
 
   // offer id from external provider
   @Expose()
   get externalOfferId() {
-    return this.Offer.campaign_id.toString();
+    return this.Offer?.campaign_id.toString();
   }
 }
-
 export class Offer2Dto implements IOfferDto {
   data: any;
 
   @Expose()
   get offerList(): Partial<IOffer>[] {
-    const offerArray = [];
+    const offerList = [];
 
     for (const item in this.data) {
       const offerClass = plainToInstance(Offer, this.data[item]);
-      const offerSer = instanceToPlain(offerClass, {
+      const offerSerialized = instanceToPlain(offerClass, {
         excludeExtraneousValues: true,
       });
-      offerArray.push(offerSer);
+      offerList.push(offerSerialized);
     }
 
-    return offerArray;
+    return offerList;
   }
 }
