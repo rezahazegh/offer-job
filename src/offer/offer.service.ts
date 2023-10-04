@@ -23,8 +23,7 @@ export class OfferService {
   ) {}
 
   async fetchOffers() {
-    const providers: Provider[] =
-      this.providerService.getListOfActiveProviders();
+    const providers = this.providerService.getListOfActiveProviders();
 
     for (const provider of providers) {
       const payload = this.providerService.fetchData(provider);
@@ -32,7 +31,7 @@ export class OfferService {
         this.serializerService.serializePayloadToOfferList(provider, payload);
       const offerListValidated =
         await this.validatorService.validateSerializedOfferList(
-          offerListSerialized.offerList,
+          offerListSerialized,
         );
 
       await this.saveOffers(offerListValidated);

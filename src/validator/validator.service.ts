@@ -2,12 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { OfferValidatorDto } from './dto/offer-validator.dto';
 import { validate } from 'class-validator';
+import { IOffer } from '../offer/interface/offer.interface';
 
 @Injectable()
 export class ValidatorService {
   private readonly logger = new Logger(ValidatorService.name);
 
-  async validateSerializedOfferList(offerList) {
+  async validateSerializedOfferList(offerList: IOffer[]): Promise<IOffer[]> {
     const offerListValidationPromises = offerList.map((offer) => {
       const offerClass = plainToInstance(OfferValidatorDto, offer);
       return validate(offerClass);
