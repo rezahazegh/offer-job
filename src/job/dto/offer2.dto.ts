@@ -1,5 +1,11 @@
 import { IOffer } from '../interface/offer.interface';
-import { Expose, instanceToPlain, plainToClass, Type } from 'class-transformer';
+import {
+  Expose,
+  instanceToPlain,
+  plainToClass,
+  plainToInstance,
+  Type,
+} from 'class-transformer';
 import { IOfferDto } from '../interface/offer-dto.interface';
 
 class OfferPart {
@@ -91,7 +97,7 @@ export class Offer2Dto implements IOfferDto {
     const offerArray = [];
 
     for (const item in this.data) {
-      const offerClass = plainToClass(Offer, this.data[item]);
+      const offerClass = plainToInstance(Offer, this.data[item]);
       const offerSer = instanceToPlain(offerClass, {
         excludeExtraneousValues: true,
       });

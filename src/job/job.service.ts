@@ -50,7 +50,7 @@ export class JobService {
   }
   private serializePayloadToOfferList(provider: Provider, payload) {
     const offerDto = OfferDtoFactory.getDto(provider);
-    const offerListClass = plainToClass(offerDto, payload);
+    const offerListClass = plainToInstance(offerDto, payload);
     const offerListSerialized = instanceToPlain(offerListClass, {
       excludeExtraneousValues: true,
     });
