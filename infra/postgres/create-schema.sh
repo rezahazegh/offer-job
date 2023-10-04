@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+POSTGRES="psql ${DB_NAME} --username ${POSTGRES_USER}"
+
+echo "Creating schema: ${DB_SCHEMA}"
+
+$POSTGRES <<-EOSQL
+CREATE SCHEMA ${DB_SCHEMA};
+GRANT ALL ON SCHEMA ${DB_SCHEMA} TO ${DB_APP_USER};
+CREATE EXTENSION ltree SCHEMA ${DB_SCHEMA};
+EOSQL

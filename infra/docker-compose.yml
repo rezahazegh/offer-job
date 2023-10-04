@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: offer_job_postgres
+    build:
+      context: ./postgres
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - postgresdb:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      DB_NAME: '${DB_NAME}'
+      DB_SCHEMA: '${DB_SCHEMA}'
+      DB_APP_USER: '${DB_APP_USER}'
+      DB_APP_PASS: '${DB_APP_PASS}'
+
+volumes:
+  postgresdb:
