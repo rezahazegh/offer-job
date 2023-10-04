@@ -5,6 +5,7 @@ import { OfferModule } from './offer/offer.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProviderModule } from './provider/provider.module';
+import { SerializerModule } from './serializer/serializer.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ProviderModule } from './provider/provider.module';
     }),
     OfferModule,
     ProviderModule,
+    SerializerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
