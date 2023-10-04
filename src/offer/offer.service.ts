@@ -1,11 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { payload as payload1 } from '../../payload/offer1.payload';
-import { payload as payload2 } from '../../payload/offer2.payload';
-import {
-  instanceToPlain,
-  plainToClass,
-  plainToInstance,
-} from 'class-transformer';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { Provider } from './enum/provider.enum';
 import { OfferDtoFactory } from './dto/offer-dto.factory';
 import { validate } from 'class-validator';
@@ -14,21 +8,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Offer } from './entity/offer.entity';
 import { Repository } from 'typeorm';
 import { IOffer } from './interface/offer.interface';
+import { ProviderService } from '../provider/provider.service';
 
 @Injectable()
 export class OfferService {
   private readonly logger = new Logger(OfferService.name);
 
   constructor(
+    private readonly providerService: ProviderService,
     @InjectRepository(Offer)
     private readonly offerRepository: Repository<Offer>,
   ) {}
 
   async fetchOffers() {
-    const providers: Provider[] = this.getListOfActiveProviders();
+    const providers: Provider[] =
+      this.providerService.getListOfActiveProviders();
 
     for (const provider of providers) {
-      const payload = this.fetchData(provider);
+      const payload = this.providerService.fetchData(provider);
       const offerListSerialized = this.serializePayloadToOfferList(
         provider,
         payload,
@@ -40,17 +37,7 @@ export class OfferService {
       await this.saveOffers(offerListValidated);
     }
   }
-  private getListOfActiveProviders(): Provider[] {
-    return Object.values(Provider);
-  }
-  private fetchData(provider: Provider) {
-    switch (provider) {
-      case Provider.Offer1:
-        return payload1;
-      case Provider.Offer2:
-        return payload2;
-    }
-  }
+
   private serializePayloadToOfferList(provider: Provider, payload) {
     const offerDto = OfferDtoFactory.getDto(provider);
     const offerListClass = plainToInstance(offerDto, payload);
