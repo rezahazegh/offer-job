@@ -1,9 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { Provider } from '../provider/enum/provider.enum';
-import { OfferDtoFactory } from '../serializer/dto/offer-dto.factory';
-import { validate } from 'class-validator';
-import { OfferValidatorDto } from '../validator/dto/offer-validator.dto';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Offer } from './entity/offer.entity';
 import { Repository } from 'typeorm';
@@ -12,7 +7,6 @@ import { ProviderService } from '../provider/provider.service';
 import { SerializerService } from '../serializer/serializer.service';
 import { ValidatorService } from '../validator/validator.service';
 import { SlugService } from './slug.service';
-import { of } from 'rxjs';
 
 @Injectable()
 export class OfferService {
